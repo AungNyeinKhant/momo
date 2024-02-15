@@ -1,0 +1,17 @@
+.editorconfig
+.env
+.env.example
+.htaccess
+.rnd
+.styleci.yml
+artisan
+composer.json
+composer.lock
+error_log
+modules_statuses.json
+my.json
+package.json
+php.ini
+phpunit.xml
+README.md
+storage/
