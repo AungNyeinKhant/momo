@@ -43,7 +43,9 @@ class ProductLogic
         $product = Food::find($product_id);
         return Food::active()
         ->whereHas('restaurant', function($query){
-            $query->Weekday();
+            $query->where('delivery', 1)
+            ->orWhere('take_away', 1)
+            ->Weekday();
         })
         ->where('category_ids', $product->category_ids)
         ->where('id', '!=', $product->id)
@@ -55,7 +57,9 @@ class ProductLogic
     {
         $key = explode(' ', $name);
         $paginator = Food::active()->whereHas('restaurant', function($q)use($zone_id){
-            $q->whereIn('zone_id', $zone_id)->Weekday();
+            $q->where('delivery', 1)
+            ->orWhere('take_away', 1)
+            ->whereIn('zone_id', $zone_id)->Weekday();
         })->where(function ($q) use ($key) {
             foreach ($key as $value) {
                 $q->orWhere('name', 'like', "%{$value}%");
@@ -98,7 +102,9 @@ class ProductLogic
     $paginator = Food::active()
         ->type($type)
         ->whereHas('restaurant', function ($q) use ($zone_id) {
-            $q->whereIn('zone_id', $zone_id)->Weekday();
+            $q->where('delivery', 1)
+            ->orWhere('take_away', 1)
+            ->whereIn('zone_id', $zone_id)->Weekday();
         })
         ->whereHas('reviews', function ($q) use ($currentMonthStart, $currentMonthEnd) {
             $q->whereBetween('created_at', [$currentMonthStart, $currentMonthEnd]);

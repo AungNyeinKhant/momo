@@ -130,7 +130,7 @@ class OrderController extends Controller
             })
             ->Notpos()
             ->hasSubscriptionToday()
-            ->orderBy('schedule_at', 'desc')
+            //->orderBy('schedule_at', 'desc')
             ->paginate(config('default_pagination'));
 
         $orderstatus = $request?->orderStatus ?? [];

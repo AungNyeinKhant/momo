@@ -242,8 +242,10 @@ class CustomerAuthController extends Controller
         }
 
         $verify = EmailVerifications::where(['email' => $request['email'], 'token' => $request['token']])->first();
-
+        $user = User::where('email',$request['email'])->first();
         if (isset($verify)) {
+            $user->email_verified_at = now();
+            $user->save();
             $verify->delete();
             return response()->json([
                 'message' => translate('messages.token_varified'),

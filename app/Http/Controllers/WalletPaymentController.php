@@ -57,4 +57,12 @@ class WalletPaymentController extends Controller
         }
 
     }
+
+    public function mailTestUi(){
+        return view('mailtest.index');
+    }
+
+    public function mailTestFun(){
+
+    }
 }

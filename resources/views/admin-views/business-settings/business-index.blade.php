@@ -65,7 +65,7 @@
                         </p>
                     </div>
                 </div>
-                 @if(auth('admin')->user()->role_id==1)
+                 @if(auth('admin')->user()->role_id==1 || auth('admin')->user()->role_id==2)
                 <form action="{{ route('admin.business-settings.update-setup') }}" method="post"
                     enctype="multipart/form-data">
                     @csrf

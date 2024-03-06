@@ -65,8 +65,8 @@ class DashboardController extends Controller
     public function restaurant_data()
     {
         $restaurant =Helpers::get_restaurant_data();
-     $new_pending_order = DB::table('orders')->where(['restaurant_checked' => 0])->where('restaurant_id', $restaurant?->id)->where('order_status','pending');
-
+    //  $new_pending_order = DB::table('orders')->where(['restaurant_checked' => 0])->where('restaurant_id', $restaurant?->id)->where('order_status','pending');
+     $new_pending_order = DB::table('orders')->where(['restaurant_checked' => 0])->where('restaurant_id', $restaurant?->id)->whereIn('order_status',['pending','processing']);
         $data =0;
         if (($restaurant->restaurant_model == 'subscription'  && $restaurant?->restaurant_sub?->self_delivery == 1)  || ($restaurant->restaurant_model == 'commission' &&  $restaurant->self_delivery_system == 1) ){
         $data =1;

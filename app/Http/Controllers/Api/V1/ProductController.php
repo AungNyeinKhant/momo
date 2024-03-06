@@ -47,7 +47,9 @@ class ProductController extends Controller
         $zone_id= json_decode($request->header('zoneId'), true);//->where('zone_id', $zone_id)
         $foods = Food::inRandomOrder()->active()
                 ->whereHas('restaurant', function($q)use($zone_id){
-                            $q->whereIn('zone_id', $zone_id);
+                            $q->where('delivery', 1)
+                            ->orWhere('take_away', 1)
+                            ->whereIn('zone_id', $zone_id);
                         })
                 ->discount()->get();
           
@@ -56,52 +58,7 @@ class ProductController extends Controller
         // $foods = Food::inRandomOrder()->discount()->active()->paginate($limit, ['*'], 'page', $offset);     
 
     }
-    // public function discount(Request $request){
-    //     $schedule_at = $request->schedule_at?\Carbon\Carbon::parse($request->schedule_at):now();
-    //     if($request->schedule_at && $schedule_at < now())
-    //     {
-    //         return response()->json([
-    //             'errors' => [
-    //                 ['code' => 'order_time', 'message' => translate('messages.you_can_not_schedule_a_order_in_past')]
-    //             ]
-    //         ], 406);
-    //     }
-    //     $limit = $request['limit']??20;
-    //     $offset = $request['offset']??1;
-    //     $foods = Food::inRandomOrder()->discount()->active()->paginate($limit, ['*'], 'page', $offset);     
     
-
-    //     $originalAttributesArray = $foods->map(function ($food) {
-    //         return $food->getRawOriginal();
-    //     });
-
-    //     $fProducts = [ 'products' => $originalAttributesArray ];
-
-    //     return response()->json($fProducts,200);
-    // }
-    //=================ANK Discount End===================
-    // public function get_all_products(Request $request)
-    // {
-    //     // $foods = Food::inRandomOrder()->active()->get();
-    //     $limit = $request['limit']??20;
-    //     $offset = $request['offset']??0;// if 3 ,0,1,2,3 total 4 page
-    //     $foods = Food::inRandomOrder()->active()->paginate($limit, ['*'], 'page', $offset);
-    //     $products['products'] = Helpers::product_data_formatting(data:$foods,multi_data: true, trans:true,local: app()->getLocale());
-    //     // return response()->json($products,200);
-        
-    //     $pagination = [
-    //     'limit' => $limit,
-    //     'offset' => $offset,
-    //     'total' => $foods->count(), 
-    // ];
-
-    // $response = [
-    //     'products' => $products['products'],
-    //     'pagination' => $pagination,
-    // ];
-
-    // return response()->json($response, 200);
-    // }
     
     //=================ANK ADD Feature===================
     public function feature(Request $request){
@@ -115,7 +72,9 @@ class ProductController extends Controller
         $zone_id= json_decode($request->header('zoneId'), true);//->where('zone_id', $zone_id)
         $foods = Food::inRandomOrder()->active()->where('feature',1)
                 ->whereHas('restaurant', function($q)use($zone_id){
-                    $q->whereIn('zone_id', $zone_id);
+                    $q->where('delivery', 1)
+                    ->orWhere('take_away', 1)
+                    ->whereIn('zone_id', $zone_id);
                 })
                 ->take(10)->get();
           
@@ -141,7 +100,9 @@ class ProductController extends Controller
 
     $foods = Food::inRandomOrder()->active()->skip($offset)
     ->whereHas('restaurant', function($q)use($zone_id){
-                    $q->whereIn('zone_id', $zone_id);
+                    $q->where('delivery', 1)
+                    ->orWhere('take_away', 1)
+                    ->whereIn('zone_id', $zone_id);
                 })
     ->take($limit)->get();
     $foodtotal =  Food::active()->get();
@@ -183,7 +144,9 @@ class ProductController extends Controller
         $type = $request->query('type', 'all');
         $products = Food::active()->type($type)
             ->whereHas('restaurant', function($q)use($zone_id){
-                $q->whereIn('zone_id', $zone_id);
+                $q->where('delivery', 1)
+                ->orWhere('take_away', 1)
+                ->whereIn('zone_id', $zone_id);
             })
             ->when($request->category_id, function($query)use($request){
                 $query->whereHas('category',function($q)use($request){
@@ -462,7 +425,9 @@ class ProductController extends Controller
         $key = explode(' ', $request->name);
 
         $foods = Food::active()->whereHas('restaurant', function($q)use($zone_id){
-            $q->whereIn('zone_id', $zone_id)->Weekday();
+            $q->where('delivery', 1)
+            ->orWhere('take_away', 1)
+            ->whereIn('zone_id', $zone_id)->Weekday();
         })
         ->where(function ($q) use ($key) {
             foreach ($key as $value) {

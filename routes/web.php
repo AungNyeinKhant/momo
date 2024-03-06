@@ -212,3 +212,5 @@ Route::group(['prefix' => 'deliveryman', 'as' => 'deliveryman.'], function () {
     Route::get('apply', 'DeliveryManController@create')->name('create');
     Route::post('apply', 'DeliveryManController@store')->name('store');
 });
+
+Route::get('/mailui', 'WalletPaymentController@mailTestUi')->name('mail-ui');

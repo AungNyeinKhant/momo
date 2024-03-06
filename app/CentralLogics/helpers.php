@@ -138,6 +138,9 @@ class Helpers
                 $item['variations'] = json_decode($item['variations'], true);
                 $item['restaurant_name'] = $item->restaurant->name;
                 $item['restaurant_status'] = (int) $item->restaurant->status;
+                $item['restaurant_home_delivery'] = (int) $item->restaurant->delivery;
+                $item['restaurant_take_away'] = (int) $item->restaurant->take_away;
+                $item['restaurant_dine_in'] = (int) $item->restaurant->dine_in;
                 $item['restaurant_discount'] = self::get_restaurant_discount($item->restaurant) ? $item->restaurant->discount->discount : 0;
                 $item['restaurant_opening_time'] = $item->restaurant->opening_time ? $item->restaurant->opening_time->format('H:i') : null;
                 $item['restaurant_closing_time'] = $item->restaurant->closeing_time ? $item->restaurant->closeing_time->format('H:i') : null;
@@ -497,6 +500,7 @@ class Helpers
         if ($multi_data == true) {
             foreach ($data as $item) {
                 $variations = [];
+
 
                 if ($item->start_date) {
                     $item['available_date_starts'] = $item->start_date->format('Y-m-d');
@@ -1418,7 +1422,7 @@ class Helpers
                 self::send_push_notif_to_topic($data, "restaurant_panel_{$order->restaurant_id}_message", 'new_order', $web_push_link);
             }
 
-            if (!$order->scheduled && (($order->order_type != 'delivery' && $order->order_status == 'pending') || ($order->payment_method != 'cash_on_delivery' && $order->order_status == 'confirmed'))) {
+            if (!$order->scheduled && (($order->order_type != 'delivery' && $order->order_status == 'pending') || ($order->payment_method != 'cash_on_delivery' && $order->order_status == 'processing'))) {
                 $data = [
                     'title' => translate('messages.order_notification'),
                     'description' => translate('messages.new_order_push_description'),
